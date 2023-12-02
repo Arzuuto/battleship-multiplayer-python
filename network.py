@@ -38,16 +38,12 @@ class Network:
                 self.socket.sendall(data.encode())
         except Exception as e:
             print("Error sending data: " + e)
-
+    
     def receive(self):
-        try:
-            if self.client_socket:
-                return self.client_socket.recv(1024).decode()
-            else:
-                return self.socket.recv(1024).decode()
-        except Exception as e:
-            print(f"Error receiving data: {e}")
-            return None
+        if self.client_socket:
+            return self.client_socket.recv(1024).decode()
+        else:
+            return self.socket.recv(1024).decode()
 
     def close_connection(self):
         if self.client_socket:
