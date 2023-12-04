@@ -1,13 +1,12 @@
 from ship import read_ship_file
 
 class Board:
-    def __init__(self, size=8):
-        self.size = size
+    def __init__(self):
         self.own_board = [
-            ['~' for _ in range(size)] for _ in range(size)
+            ['~' for _ in range(8)] for _ in range(8)
         ]
         self.enemy_board = [
-            ['~' for _ in range(size)] for _ in range(size)
+            ['~' for _ in range(8)] for _ in range(8)
         ]
         self.ships = []
 
@@ -15,7 +14,7 @@ class Board:
         ships = read_ship_file(ship_file)
         for ship in ships:
             if not self.place_ship(ship):
-                print(f"Error placing ship at {ship.positions}")
+                print("Error placing ship at" + str(ship.positions))
                 return False
         return True
 
@@ -40,16 +39,16 @@ class Board:
     def find_ship_by_position(self, position):
         for ship in self.ships:
             if position in ship.positions:
-                return Ship
+                return ship
         return None
 
 
-    def receive_attack(self, position):
+    def receive_attack(self, position): # need to improve this
         row, col = map(int, position.split(','))
         print("Attack on " + str(position))
         if self.own_board[row][col] == 'S':
             self.own_board[row][col] = 'H'
-            ship = self.find_ship_by_position(position)
+            ship = self.find_ship_by_position((int(row), int(col)))
             if ship:
                 ship.hit()
                 return 'Sunk'

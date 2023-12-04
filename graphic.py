@@ -2,20 +2,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class GameGraphics:
-    def __init__(self, board_size):
-        self.board_size = board_size
+    def __init__(self):
         plt.ion()
-        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(10, 5))
+        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(12, 6))
+        self.fig.suptitle("Battleship Game")
         self.ax1.set_title("Own Board")
         self.ax2.set_title("Enemy Board")
+        print("good")
         plt.show(block=False)
 
+    # Update one board
     def update_board(self, ax, board):
         ax.clear()
-        ax.set_xticks(np.arange(0, self.board_size, 1))
-        ax.set_xticklabels([chr(i+ord('A')) for i in range(self.board_size)])
-        ax.set_yticks(np.arange(0, self.board_size, 1))
-        ax.set_yticklabels([str(i+1) for i in range(self.board_size)])
+        ax.set_xticks(np.arange(0, 8, 1))
+        ax.set_xticklabels(["A", "B", "C", "D", "E", "F", "G", "H"])
+        ax.set_yticks(np.arange(0, 8, 1))
+        ax.set_yticklabels(["1", "2", "3", "4", "5", "6", "7", "8"])
         ax.xaxis.tick_top()
         ax.grid(which='both')
 
@@ -27,6 +29,7 @@ class GameGraphics:
 
         ax.invert_yaxis()
 
+    # Update each board
     def update_plots(self, own_board, enemy_board):
         self.update_board(self.ax1, own_board)
         self.update_board(self.ax2, enemy_board)

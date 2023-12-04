@@ -5,8 +5,9 @@ from graphic import GameGraphics
 import sys
 
 def main():
+    # Check if the user know how to start the program
     if len(sys.argv) < 2:
-        print("Usage: main.py [ip_address] ship_file")
+        print("Usage: main.py [ip_address] [port] ship_file")
         sys.exit(1)
 
     ship_file = sys.argv[-1]  # The last argument is always the ship file
@@ -20,8 +21,9 @@ def main():
     else:
         # Start as client (connecting to host)
         ip_address = sys.argv[1]
+        port = int(sys.argv[2])
         network = Network(host=ip_address)
-        network.connect_to_server()
+        network.connect_to_server(port)
         is_my_turn = False
 
     # Setup the game
@@ -30,15 +32,16 @@ def main():
         print("Failed to set up ships. Exiting game.")
         sys.exit(1)
     gameplay = Gameplay(board, network, is_my_turn)
-    graphics = GameGraphics(8)
+    graphics = GameGraphics()
     graphics.update_plots(board.own_board, board.enemy_board) # Show matplotlib
 
     # Game loop
-    while not gameplay.check_game_over():
+    game_over = False
+    while not game_over:
         if gameplay.is_my_turn:
-            gameplay.handle_player_turn(graphics.ax1, graphics.ax2, graphics)
+            game_over = gameplay.handle_player_turn(graphics.ax1, graphics.ax2, graphics)
         else:
-            gameplay.handle_enemy_turn(graphics.ax1, graphics.ax2, graphics)
+            game_over = gameplay.handle_enemy_turn(graphics.ax1, graphics.ax2, graphics)
 
     network.close_connection()
 
