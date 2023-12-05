@@ -8,7 +8,6 @@ class GameGraphics:
         self.fig.suptitle("Battleship Game")
         self.ax1.set_title("Own Board")
         self.ax2.set_title("Enemy Board")
-        print("good")
         plt.show(block=False)
 
     # Update one board
